@@ -1,0 +1,51 @@
+  version: '3'
+
+  vars:
+    GOOS: "{{default OS .GOOS}}"
+    PROJ_DIR: "./"
+    DC_DIR: "deployment/docker-compose"
+    MVNW: '{{if eq .GOOS "windows"}}powershell ./mvnw.cmd{{else}}./mvnw{{end}}'
+    INFRA_DC_FILE: "{{.DC_DIR}}/infra.yml"
+
+  tasks:
+
+    default:
+      cmds:
+        - task: test
+
+    test:
+      dir: '.'
+      deps: [format]
+      cmds:
+        - "{{.MVNW}} clean verify"
+
+    format:
+      dir: '.'
+      cmds:
+        - "{{.MVNW}} spotless:apply"
+
+    build:
+      cmds:
+        - "{{.MVNW}} verify"
+
+    start_infra:
+      cmds:
+        - docker compose -f "{{.INFRA_DC_FILE}}" up -d
+
+    stop_infra:
+      cmds:
+        - docker compose -f "{{.INFRA_DC_FILE}}" stop
+        - docker compose -f "{{.INFRA_DC_FILE}}" rm -f
+
+    restart_infra:
+      cmds:
+        - task: stop_infra
+        - task: sleep
+        - task: start_infra
+
+    sleep:
+      vars:
+        DURATION: '{{default 5 .DURATION}}'
+      cmds:
+        - sleep {{.DURATION}}
+
