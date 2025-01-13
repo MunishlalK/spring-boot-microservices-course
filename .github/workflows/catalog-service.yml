@@ -5,7 +5,7 @@
       paths:
         - catalog-service/**
       branches:
-        - 'master'
+        - '**'
 
   jobs:
     build:
@@ -43,4 +43,3 @@
           name: Build and Publish Docker Image
           run: |
             ./mvnw spring-boot:build-image -DskipTests
-            docker push ${{ secrets.DOCKER_USERNAME }}/bookstore-catalog-service
