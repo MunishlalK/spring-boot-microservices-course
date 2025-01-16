@@ -1,9 +1,8 @@
 package com.bookstorelabs.order.web.controllers;
 
-import com.bookstorelabs.orders.domain.OrderService;
-import com.bookstorelabs.orders.domain.SecurityService;
-import com.bookstorelabs.orders.domain.models.CreateOrderRequest;
-import com.bookstorelabs.orders.web.controllers.OrderController;
+import com.bookstorelabs.order.domain.OrderService;
+import com.bookstorelabs.order.domain.SecurityService;
+import com.bookstorelabs.order.domain.models.CreateOrderRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;

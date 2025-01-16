@@ -7,18 +7,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.math.BigDecimal;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.jupiter.api.Assertions.*;
 
 
-@Sql("/test-orders.sql")
+
 class OrderControllerTest extends AbstractIT {
 
     @Nested
     class CreateOrderTests {
         @Test
         void shouldCreateOrderSuccessfully() {
+            mockGetProductByCode("P100","Product 1",new BigDecimal("25.50"));
             var payload =
                     """
                             {

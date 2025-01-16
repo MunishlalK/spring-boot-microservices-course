@@ -1,9 +1,9 @@
 package com.bookstorelabs.order.testdata;
 
-import com.bookstorelabs.orders.domain.models.CreateOrderRequest;
-import com.bookstorelabs.orders.domain.models.OrderItem;
-import com.bookstorelabs.orders.domain.models.Customer;
-import com.bookstorelabs.orders.domain.models.Address;
+import com.bookstorelabs.order.domain.models.CreateOrderRequest;
+import com.bookstorelabs.order.domain.models.OrderItem;
+import com.bookstorelabs.order.domain.models.Customer;
+import com.bookstorelabs.order.domain.models.Address;
 
 import java.math.BigDecimal;
 import java.util.List;
