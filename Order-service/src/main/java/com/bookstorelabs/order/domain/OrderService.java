@@ -3,10 +3,13 @@ package com.bookstorelabs.order.domain;
 import com.bookstorelabs.order.domain.models.CreateOrderRequest;
 import com.bookstorelabs.order.domain.models.CreateOrderResponse;
 import com.bookstorelabs.order.domain.models.OrderCreatedEvent;
+import com.bookstorelabs.order.domain.models.OrderStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -35,4 +38,23 @@ public class OrderService {
         orderEventService.save(orderCreatedEvent);
         return new CreateOrderResponse(savedOrder.getOrderNumber());
     }
+
+    public void processNewOrders() {
+        List<OrderEntity> orders = orderRepository.findByStatus(OrderStatus.NEW);
+        log.info("Found {} new orders to process", orders.size());
+        for (OrderEntity order : orders) {
+            this.process(order);
+        }
+    }
+
+    private void process(OrderEntity order) {
+    try {
+
+    } catch(RuntimeException e) {
+        log.error("Failed to process Order with OrderNumber: {}", order.getOrderNumber(),e);
+        orderRepository.updateOrderStatus(order.getOrderNumber(), OrderStatus.ERROR);
+        orderEventService.save(OrderEventMapper.buildOrderErrorEvent(order,e.getMessage()));
+    }
+    }
+
 }
